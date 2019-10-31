@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="Stratego">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Stratego.classpath">
+        <pathelement location="build"/>
+        <pathelement location="lib/guava-18.0.jar"/>
+        <pathelement location="lib/junit-4.10.jar"/>
+    </path>
+    <target name="clean">
+        <delete dir="build"/>
+    	<delete dir="doc"/>
+    </target>
+    <target name="build">
+    	<mkdir dir="build"/>
+            <echo message="${ant.project.name}: ${ant.file}"/>
+                <javac debug="true" debuglevel="${debuglevel}" destdir="build" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="Stratego.classpath"/>
+        </javac>
+    </target>
+    <target name="run">
+        <java classname="umons.projet.Stratego" failonerror="true" fork="yes">
+            <classpath refid="Stratego.classpath"/>
+        </java>
+    </target>
+    <target name="test" depends="build">
+        <junit printsummary="yes" showoutput="yes">
+            <classpath>
+                <pathelement path="lib/junit-4.10.jar"/>
+              	<pathelement path="bin"/>
+            </classpath>
+            <batchtest>
+                <fileset dir="test/JUnit" includes="**/*Test.java"/>
+            </batchtest>
+        </junit>
+    </target>
+	<target name="javadoc">
+	    <mkdir dir="doc"/>
+	    	<javadoc sourcepath="src" destdir="doc"/>
+	    </target>
+</project>
